@@ -5,7 +5,7 @@
 2000 // nNodeR : enter only if FLAGdeltaR is 0;
 0 // FLAGdeltaZ : 0 - use nNodeZ / 1 : use deltaZ;
 0 // deltaZ (in m) : enter only if FLAGdeltaZ is 1;
-2000 // nNodeZ : enter only if FLAGdeltaZ is 0; 
+2000 // nNodeZ : enter only if FLAGdeltaZ is 0;
 1.6 // Thermal Conductivity (in W/(mK));
 1970 // Density of the work piece (in kg/m^3);
 450 // specific heat capacity (in W/(kgK));
@@ -31,3 +31,9 @@
 0 // flux Neumann Right (0 if flag is 1 and q = 0);
 0 // h for right Wall fluid;
 0 // phiInf for right wall fluid;
+
+*** Commenta below this line ***
+test case for the ECDM simulation. Material of workpiece is glass with k,rho,c as stated.
+left wall has Neuman BC. that means it is axis-symmetric.
+right and bottom walls have Dirichlet BC with Phi = 0.
+top wall has by default Robin (convective) BC. It would change in source code in the phase when there is heat input due to spark!
