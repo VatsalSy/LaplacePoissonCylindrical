@@ -1,0 +1,9 @@
+2000e-6 // Radial dimension (in m);
+2000e-6 // Axial dimension (in m);
+0 // FLAGdeltaR : 0 - use nNodeR / 1 : use deltaR;
+0 // deltaR (in m) : enter only if FLAGdeltaR is 1;
+2000 // nNodeR : enter only if FLAGdeltaR is 0;
+0 // FLAGdeltaZ : 0 - use nNodeZ / 1 : use deltaZ;
+0 // deltaZ (in m) : enter only if FLAGdeltaZ is 1;
+2000 // nNodeZ : enter only if FLAGdeltaZ is 0; 
+ 
