@@ -24,6 +24,9 @@ class InputOutput {
   static double tOffset;
   static double factorTime;
   // Boundary conditions
+  static int FLAGleftBC;
+  static int FLAGbottomBC;
+  static int FLAGrightBC;
   static double Phi_left;
   static double Qa_left;
   static double h_left;
