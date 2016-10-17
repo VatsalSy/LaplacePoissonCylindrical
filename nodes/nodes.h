@@ -4,7 +4,7 @@ class NodesAbstract {
 public:
 // These three functions can be called using the pointer to parent class as well!
   virtual void setCoeffDefault() = 0;
-  virtual void setBC() = 0;
+  virtual void setBC(int, double, double, double, double, double, double, double) = 0;
   virtual void checkOutDynamic() = 0;
 };
 #endif
@@ -22,7 +22,7 @@ public:
   static double eta; // time step for temporal marching
   static double deltaT; // cyclic time interval
   static double alpha; // diffusion coefficient
-  static double source; // source term in discretized equation
+  double source; // source term in discretized equation
   double Aw; // West coefficient
   double Ap; // Nodal temperature coefficient
   double Ae; // East coefficient
@@ -32,9 +32,10 @@ public:
   int iz; // index of row
   double R; // value of radius
   double Z; // value of axial distance
-  static void setFeaturesGrid(int, int, double, double, double, double); // nodes in R,z; Fo_cell; delta in R,Z and bar(S)/(kT_0)
+  double phi;
+  static void setFeaturesGrid(int, int, double, double, double); // nodes in R,z; Fo_cell; delta in R,Z
   static void setTimeMarch(double, double); // stability for time marching
-  Nodes (int, int); // jx and iy
+  Nodes (int, int, double); // jx, iy and bar(S)/(kT_0)
   void setCoeffDefault();
   static void checkOut();
   void checkOutDynamic();
@@ -48,7 +49,8 @@ public:
 
 class InnerNodes : public Nodes {
 public:
-  InnerNodes(int, int);
+  InnerNodes(int, int, double);
+  void setBC(int, double, double, double, double, double, double, double){std::cout << "Never call this function!" << std::endl;}
 };
 #include "InnerNodes.cpp"
 #endif
@@ -58,8 +60,11 @@ public:
 
 class BoundaryNodes : public Nodes {
 public:
-  BoundaryNodes(int,int);
-  void setBC();
+  BoundaryNodes(int,int, double);
+  void setBC(int, double, double, double, double, double, double, double); // In order -- flag, Phiwall, flux, h, k, PhiInf, coeff, deltaRZ
+  void DirichletBC(double, double); // Phiwall, coeff
+  void NeumannBC(double, double, double, double); // flux, K, coeff, deltaRZ
+  void RobinBC(double, double, double, double, double);// h, k, phiInf, coeff, deltaRZ
 };
 #include "BoundaryNodes.cpp"
 #endif

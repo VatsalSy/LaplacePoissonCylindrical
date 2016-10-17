@@ -1,43 +1,58 @@
 #ifndef InputOutput_H
 #define InputOutput_H
 class InputOutput {
+public:
   // The geometric parameters
-  static double R;
-  static double Z;
-  static int nNodeR;
-  static int nNodeZ;
-  static double deltaR;
-  static double deltaZ;
+  double R;
+  double Z;
+  int FlagDeltaR;
+  int FlagDeltaZ;
+  int nNodeR;
+  int nNodeZ;
+  double deltaR;
+  double deltaZ;
   // Material properties
-  static double ThermalCond;
-  static double rho;
-  static double SpecificHeat; // specific heat capacity per unit mass
+  double ThermalCond;
+  double rho;
+  double SpecificHeat; // specific heat capacity per unit mass
   // spark characteristics
-  static double r_0; // radius of spark
-  static double fr;  // factor to be used in the Q_top calculation
-  static double V_c; // critical voltage
-  static double I_c; // critical current
-  static double conc // concentration of electrolyte in %
+  double r_0; // radius of spark
+  double fr;  // factor to be used in the Q_top calculation
+  double V_c; // critical voltage
+  double I_c; // critical current
+  double conc; // concentration of electrolyte in %
+  double h_top; // convective BC at top
+  double Q_top; // flux from top
   // time cycle parameters
-  static double deltaCycle;
-  static double tOnset;
-  static double tOffset;
-  static double factorTime;
+  double deltaCycle;
+  double omega;
+  double tOnset;
+  double tOffset;
+  double factorTime;
   // Boundary conditions
-  static int FLAGleftBC;
-  static int FLAGbottomBC;
-  static int FLAGrightBC;
-  static double Phi_left;
-  static double Qa_left;
-  static double h_left;
-  static double Phi_infLeft;
-  static double Phi_right;
-  static double Qa_right;
-  static double h_right;
-  static double Phi_infRight;
-  static double Phi_bottom;
-  static double Qa_bottom;
-  static double h_bottom;
-  static double Phi_infBottom;
+  int FLAGleftBC;
+  int FLAGbottomBC;
+  int FLAGrightBC;
+  double Phi_left;
+  double Qa_left;
+  double h_left;
+  double Phi_infLeft;
+  double Phi_right;
+  double Qa_right;
+  double h_right;
+  double Phi_infRight;
+  double Phi_bottom;
+  double Qa_bottom;
+  double h_bottom;
+  double Phi_infBottom;
+  double Phi_0;
+  double source;
+  double Tref;
+  int cycleEnd;
+
+  InputOutput(char[256]);
+  void EventWrite(std::vector<Nodes*> &, char[256]);
+  void setInputParams(std::vector<double>);
 };
+#include "InputOutput.cpp"
 #endif

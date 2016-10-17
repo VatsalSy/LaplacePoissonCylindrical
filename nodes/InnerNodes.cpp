@@ -1,3 +1,3 @@
-InnerNodes::InnerNodes(int column, int row) : Nodes(column, row) {
-  std::cout << "Preparing (" <<row<<","<<column<<")"<< std::endl;
+InnerNodes::InnerNodes(int column, int row, double s) : Nodes(column, row, s) {
+  //std::cout << "Preparing (" <<row<<","<<column<<")"<< std::endl;
 }
