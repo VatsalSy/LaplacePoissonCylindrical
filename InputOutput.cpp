@@ -6,7 +6,7 @@ InputOutput::InputOutput(char filenameIn[256]){
     cerr << "Error opening file" <<endl;
     }
 
-  std::vector<double> v(38);
+  std::vector<double> v(39);
   for (size_t i = 0; i < v.size(); i++){
     infile>>v[i];
     infile.ignore(500,';');
@@ -99,7 +99,7 @@ void InputOutput::setInputParams(std::vector<double> InRaw){
   this->Phi_0 = InRaw[33];
   this->source = InRaw[34];
 
-
+  this->PhiInitial = InRaw[38];
   this->cycleEnd = InRaw[37];
 }
 

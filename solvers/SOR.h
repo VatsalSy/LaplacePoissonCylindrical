@@ -17,8 +17,8 @@ void SOR(std::vector<Nodes*> A, double omega, int nNodeX, int nNodeY, int maxIte
     for (size_t c = 0; c < A.size(); c++) { // sweeping through the matrix, finding the phi
 
       oldphi = A[c]->phi;
-      i = A[c]->iy;
-      j = A[c]->ix;
+      i = A[c]->iz;
+      j = A[c]->jr;
 
       if (i == 0 & j != 0 & j != nNodeX-1) {//bottom side except both corners
         //std::cout << c << std::endl;
@@ -64,6 +64,6 @@ void SOR(std::vector<Nodes*> A, double omega, int nNodeX, int nNodeY, int maxIte
 
     std::cout.precision(4);
     std::cout << "For iteration = " <<counter<<", absolute error norm = "<<error<< std::endl;
-  } while(error>=1e-6 || maxIteration > counter);
+  } while(error>=1e-6 & maxIteration > counter);
 
 } // SOR function ends

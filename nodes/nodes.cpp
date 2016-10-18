@@ -21,9 +21,9 @@ void Nodes::setTimeMarch(double Kfrac, double tdelta) {
   Nodes::Fo = (Nodes::alpha * Nodes::deltaT) / (Nodes::deltaR * Nodes::deltaR);
 
   if (Kfrac > 1 - Kfrac) {
-    Nodes::eta = (1 - Kfrac)/10;
+    Nodes::eta = (1 - Kfrac)/100;
   } else {
-    Nodes::eta = Kfrac/10;
+    Nodes::eta = Kfrac/100;
   }
 
 }
@@ -34,11 +34,10 @@ Nodes::Nodes (int column, int row, double s){// column, row and bar(S)/(kT_0)
   this->R = Nodes::deltaR/2 + Nodes::deltaR*this->jr;
   this->Z = Nodes::deltaZ/2 + Nodes::deltaZ*this->iz;
   this->phi = 0;
-  this->source = s*Nodes::deltaR*Nodes::deltaR;
-  this->setCoeffDefault();
+  this->setCoeffDefault(s);
 }
 
-void Nodes::setCoeffDefault(){
+void Nodes::setCoeffDefault(double s){ //  bar(S)/(kT_0)
   double zeta = (this->deltaR/this->deltaZ);
   double temp = ( 2 * this->jr + 1);
   this->Aw = 1 - (1/temp);
@@ -46,6 +45,7 @@ void Nodes::setCoeffDefault(){
   this->Ae = 1 + (1/temp);
   this->An = zeta * zeta;
   this->As = zeta * zeta;
+  this->source = s*Nodes::deltaR*Nodes::deltaR;
 }
 
 void Nodes::checkOut() {

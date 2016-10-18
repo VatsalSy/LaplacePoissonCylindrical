@@ -36,7 +36,7 @@ public:
   static void setFeaturesGrid(int, int, double, double, double); // nodes in R,z; Fo_cell; delta in R,Z
   static void setTimeMarch(double, double); // stability for time marching
   Nodes (int, int, double); // jx, iy and bar(S)/(kT_0)
-  void setCoeffDefault();
+  void setCoeffDefault(double);
   static void checkOut();
   void checkOutDynamic();
 };

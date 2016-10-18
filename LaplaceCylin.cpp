@@ -15,7 +15,7 @@ int main () {
   //Nodes::checkOut();
 
   // Default settings for the top edge!
-  int FLAGtopBC = 0;
+  int FLAGtopBC = 2;
   double Phi_top = 1;
   double Phi_infTop = 0;
 
@@ -94,26 +94,52 @@ int main () {
   } // sweeping for loop in columns ends
 } // sweeping for loop in rows ends
 
+// debugging section! tested for very simple case where steadystate solution is expected!
+//SOR(A,1.7,in.nNodeR,in.nNodeZ,1000000);
+//sprintf (filenameOut, "output/debug%03d.dat", 0);
+//in.EventWrite(A,filenameOut);
+// Debugging section ends!
+
 int cycle = 0;
 char filenameOut[256];
 int sparkIdx = ceil(in.r_0/in.deltaR);
+
 // initial condition
+// Setting the initial value conditions!
+for (size_t i = 0; i < A.size(); i++) {
+  A[i]->phi = in.PhiInitial;
+}
 sprintf (filenameOut, "output/cycle%03d.dat", 0);
 in.EventWrite(A,filenameOut);
+
 
 while (cycle < in.cycleEnd) {
   cycle++;
 
   for (size_t istep = 0; istep < 1/Nodes::eta; istep++) {
+
     if (istep < in.omega/Nodes::eta) { // pulse on
-      std::cout << "This is pulse on!" << std::endl;
-      RungeKutta4(A);
+      //std::cout << "This is pulse on!" << std::endl;
+      for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
+        A[i]->setCoeffDefault(sourceTerm);
+        A[i]->checkOutDynamic();
+        A[i]->setBC();
+      }
+        RungeKutta4(A);
+      }
+
     } else { // pulse off
-      std::cout << "This is pulse off!" << std::endl;
+      //std::cout << "This is pulse off!" << std::endl;
+      for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
+        A[i]->setCoeffDefault(sourceTerm);
+        A[i]->checkOutDynamic();
+        A[i]->setBC();
+      }
       RungeKutta4(A);
     }
   } // end for loop of in cycle time integration
-sprintf (filenameOut, "output/cycle%03d.dat", cycle);
+
+sprintf (filenameOut, "outputRobin/cycle%03d.dat", cycle);
 in.EventWrite(A,filenameOut);
 
 std::cout << "Cycle " <<cycle<< " is completed!"<< std::endl;

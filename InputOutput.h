@@ -49,6 +49,7 @@ public:
   double source;
   double Tref;
   int cycleEnd;
+  double PhiInitial;
 
   InputOutput(char[256]);
   void EventWrite(std::vector<Nodes*> &, char[256]);

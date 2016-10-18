@@ -35,7 +35,8 @@
 0 // sourceTerm bar(S_phi);
 298.15 // Tref 25 degree Celcius;
 1 // h_Top;
-10 // number of cycles to find!
+500 // number of cycles to find;
+0 // Initial Phi!
 
 *** Commenta below this line ***
 test case for the ECDM simulation. Material of workpiece is glass with k,rho,c as stated.

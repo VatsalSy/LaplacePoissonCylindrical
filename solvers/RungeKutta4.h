@@ -1,4 +1,5 @@
-void calcfun(std::vector<Nodes*> &, std::vector<double> , std::vector<double> );
+void calcfun(std::vector<Nodes*> &, std::vector<double> &, std::vector<double> &);
+
 void RungeKutta4(std::vector<Nodes*> &A) {
 // make dummy images
 double Eta = A[0]->eta, Fourier = A[0]->Fo, n = A.size();
@@ -9,15 +10,40 @@ std::vector<double> fun1(n), fun2(n), fun3(n), fun4(n);
 for (size_t i = 0; i < A.size(); i++) {
   phivec1[i] = A[i]->phi;
 } // end for of making image of phi_n
+
 // calculate f(phi_n)
 calcfun(A,phivec1,fun1);
+// Step 1 finding phi(n+0.5)*
 for (size_t i = 0; i < A.size(); i++) {
   phivec2[i] = phivec1[i] + Eta*Fourier*fun1[i]/2;
+  //std::cout << fun1[i] << std::endl;
 }
 
+// calculate f(phi(n+0.5)*)
+calcfun(A,phivec2,fun2);
+// Step 2 finding phi(n+0.5)**
+for (size_t i = 0; i < A.size(); i++) {
+  phivec3[i] = phivec1[i] + Eta*Fourier*fun2[i]/2;
 }
 
-void calcfun(std::vector<Nodes*> &A, std::vector<double> phivec, std::vector<double> fun) {
+// calculate f(phi(n+0.5)**)
+calcfun(A,phivec3,fun3);
+// Step 3 finding phi(n+1)*
+for (size_t i = 0; i < A.size(); i++) {
+  phivec4[i] = phivec1[i] + Eta*Fourier*fun3[i];
+}
+
+// calculate f(phi(n+1)*)
+calcfun(A,phivec4,fun4);
+// Step 4 getting phi(n+1)
+for (size_t i = 0; i < A.size(); i++) {
+  A[i]->phi = phivec1[i] + Eta*Fourier*( fun1[i] + 2 * ( fun2[i] + fun3[i] ) + fun4[i] )/6;
+  //std::cout << phivec2[i] << std::endl;
+}
+
+} // RungeKutta4 ends
+
+void calcfun(std::vector<Nodes*> &A, std::vector<double> &phivec, std::vector<double> &fun) {
   int nR = A[0]->nNodeR, nZ = A[0]->nNodeZ;
   for (size_t i = 0; i < A.size(); i++) {
     if (A[i]->iz == 0 & A[i]->jr != 0 & A[i]->jr != nR-1) {//bottom side except both corners

@@ -1,4 +1,4 @@
-#nNodeR = 200 ,nNodeZ = 200
+#nNodeR = 500 ,nNodeZ = 200
 R Z Phi
 5e-06 5e-06 0
 1.5e-05 5e-06 0
