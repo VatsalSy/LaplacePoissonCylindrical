@@ -1,7 +1,9 @@
 #include <iostream>
+#include <stdlib.h>
 #include "nodes.h"
 #include <vector>
 #include <algorithm>
+
 //int Nodes::nNodeX = 100;
 using namespace std;
 

@@ -3,7 +3,7 @@
 class NodesAbstract {
 public:
 // These three functions can be called using the pointer to parent class as well!
-  virtual void setCoeffDefault() = 0;
+  virtual void setCoeffDefault(double) = 0;
   virtual void setBC(int, double, double, double, double, double, double, double) = 0;
   virtual void checkOutDynamic() = 0;
 };

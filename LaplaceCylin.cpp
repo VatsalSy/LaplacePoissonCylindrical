@@ -15,10 +15,10 @@ int main () {
   //Nodes::checkOut();
 
   // Default settings for the top edge!
-  int FLAGtopBC = 2;
+  int FLAGtopBC = 1;
   double Phi_top = 1;
   double Phi_infTop = 0;
-
+  double Q_toptemp = 1;
   std::vector<Nodes*> A(Nodes::nNodeR * Nodes::nNodeZ);
   // Setting the coefficients and other things!
   int counter = 0;
@@ -36,7 +36,7 @@ int main () {
       } else if (i == Nodes::nNodeZ-1 & j != 0 & j != Nodes::nNodeR-1) {// top side
         BoundaryNodes* tempTop = new BoundaryNodes(j,i, sourceTerm);
         //tempTop->checkOutDynamic();
-        tempTop->setBC(FLAGtopBC, Phi_top, 0, in.h_top, in.ThermalCond, Phi_infTop,tempTop->An,in.deltaZ);
+        tempTop->setBC(FLAGtopBC, Phi_top, Q_toptemp, in.h_top, in.ThermalCond, Phi_infTop, tempTop->An, in.deltaZ);
         //tempTop->checkOutDynamic();
         A[counter] = tempTop;
         //A[counter]->checkOutDynamic();
@@ -76,14 +76,14 @@ int main () {
       } else if (i == Nodes::nNodeZ-1 & j == Nodes::nNodeR-1){// top right
         //tempCorner->checkOutDynamic();
         BoundaryNodes* tempCorner = new BoundaryNodes(j,i,sourceTerm);
-        tempCorner->setBC(FLAGtopBC, Phi_top, 0, in.h_top, in.ThermalCond, Phi_infTop,tempCorner->An,in.deltaZ); // top
+        tempCorner->setBC(FLAGtopBC, Phi_top, Q_toptemp, in.h_top, in.ThermalCond, Phi_infTop,tempCorner->An,in.deltaZ); // top
         tempCorner->setBC(in.FLAGrightBC, in.Phi_right, in.Qa_right, in.h_right, in.ThermalCond, in.Phi_infRight,tempCorner->Ae,in.deltaR); // right
         A[counter] = tempCorner;
         //A[counter]->checkOutDynamic();
       } else if (i == Nodes::nNodeZ-1 & j == 0){ // top left
         BoundaryNodes* tempCorner = new BoundaryNodes(j,i,sourceTerm);
         //tempCorner->checkOutDynamic();
-        tempCorner->setBC(FLAGtopBC, Phi_top, 0, in.h_top, in.ThermalCond, Phi_infTop,tempCorner->An,in.deltaZ); // top
+        tempCorner->setBC(FLAGtopBC, Phi_top, Q_toptemp, in.h_top, in.ThermalCond, Phi_infTop,tempCorner->An,in.deltaZ); // top
         tempCorner->setBC(in.FLAGleftBC, in.Phi_left, in.Qa_left, in.h_left, in.ThermalCond, in.Phi_infLeft,tempCorner->Aw,in.deltaR); // left
         A[counter] = tempCorner;
         //A[counter]->checkOutDynamic();
@@ -103,7 +103,7 @@ int main () {
 int cycle = 0;
 char filenameOut[256];
 int sparkIdx = ceil(in.r_0/in.deltaR);
-
+double topQ = 0;
 // initial condition
 // Setting the initial value conditions!
 for (size_t i = 0; i < A.size(); i++) {
@@ -120,26 +120,26 @@ while (cycle < in.cycleEnd) {
 
     if (istep < in.omega/Nodes::eta) { // pulse on
       //std::cout << "This is pulse on!" << std::endl;
-      for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
+      /*for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
         A[i]->setCoeffDefault(sourceTerm);
-        A[i]->checkOutDynamic();
-        A[i]->setBC();
-      }
+        //A[i]->checkOutDynamic();
+        topQ = in.Q_top*exp(-45*(A[i]->R/in.r_0)*(A[i]->R/in.r_0));
+        A[i]->setBC(1,0,topQ,in.h_top, in.ThermalCond, Phi_infTop,A[i]->An,in.deltaZ);
+        //A[i]->checkOutDynamic();
+      }*/
         RungeKutta4(A);
-      }
-
-    } else { // pulse off
+      } else { // pulse off
       //std::cout << "This is pulse off!" << std::endl;
-      for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
+      /*for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
         A[i]->setCoeffDefault(sourceTerm);
-        A[i]->checkOutDynamic();
-        A[i]->setBC();
-      }
+        //A[i]->checkOutDynamic();
+        A[i]->setBC(2,0,topQ,in.h_top, in.ThermalCond, 0,A[i]->An,in.deltaZ);
+      }*/
       RungeKutta4(A);
     }
   } // end for loop of in cycle time integration
 
-sprintf (filenameOut, "outputRobin/cycle%03d.dat", cycle);
+sprintf (filenameOut, "output/cycle%03d.dat", cycle);
 in.EventWrite(A,filenameOut);
 
 std::cout << "Cycle " <<cycle<< " is completed!"<< std::endl;
