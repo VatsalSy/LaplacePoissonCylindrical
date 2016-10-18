@@ -6,7 +6,7 @@ cycleEnd = 500;
 
 for cycle = cycleIn:1:cycleEnd
 tic;
-filename = sprintf('outputRobin/cycle%03d.dat', cycle);
+filename = sprintf('output/cycle%03d.dat', cycle);
 cellsize = getDomainSize(filename);
 nNodeR = cellsize(1);
 nNodeZ = cellsize(2);
@@ -39,4 +39,5 @@ toc;
 projection = ['Completed step ' num2str(cycle) ' of ' num2str(cycleEnd)];
 display(projection)
 end
+imageFolder2mpeg('images')
 fprintf('\n You job is finished.\n');

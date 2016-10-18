@@ -120,21 +120,21 @@ while (cycle < in.cycleEnd) {
 
     if (istep < in.omega/Nodes::eta) { // pulse on
       //std::cout << "This is pulse on!" << std::endl;
-      /*for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
+      for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
         A[i]->setCoeffDefault(sourceTerm);
         //A[i]->checkOutDynamic();
         topQ = in.Q_top*exp(-45*(A[i]->R/in.r_0)*(A[i]->R/in.r_0));
         A[i]->setBC(1,0,topQ,in.h_top, in.ThermalCond, Phi_infTop,A[i]->An,in.deltaZ);
         //A[i]->checkOutDynamic();
-      }*/
+      }
         RungeKutta4(A);
       } else { // pulse off
       //std::cout << "This is pulse off!" << std::endl;
-      /*for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
+      for (size_t i = (in.nNodeR)*(in.nNodeZ) - in.nNodeR ; i < (in.nNodeR)*(in.nNodeZ) - in.nNodeR + sparkIdx + 1; i++) {
         A[i]->setCoeffDefault(sourceTerm);
         //A[i]->checkOutDynamic();
         A[i]->setBC(2,0,topQ,in.h_top, in.ThermalCond, 0,A[i]->An,in.deltaZ);
-      }*/
+      }
       RungeKutta4(A);
     }
   } // end for loop of in cycle time integration
