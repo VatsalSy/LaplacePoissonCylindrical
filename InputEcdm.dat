@@ -2,10 +2,10 @@
 2000e-6 // Axial dimension (in m);
 0 // FLAGdeltaR : 0 - use nNodeR / 1 : use deltaR;
 0 // deltaR (in m) : enter only if FLAGdeltaR is 1;
-200 // nNodeR : enter only if FLAGdeltaR is 0;
+750 // nNodeR : enter only if FLAGdeltaR is 0;
 0 // FLAGdeltaZ : 0 - use nNodeZ / 1 : use deltaZ;
 0 // deltaZ (in m) : enter only if FLAGdeltaZ is 1;
-200 // nNodeZ : enter only if FLAGdeltaZ is 0;
+750 // nNodeZ : enter only if FLAGdeltaZ is 0;
 1.6 // Thermal Conductivity (in W/(mK));
 1970 // Density of the work piece (in kg/m^3);
 450 // specific heat capacity (in W/(kgK));
@@ -21,12 +21,12 @@
 0 // flux Neumann Left (0 if flag is 1 and q = 0);
 0 // h for left Wall fluid;
 0 // phiInf for left wall fluid;
-0 // FLAGbottomBC (0 - Dirichlet, 1 - Neumann, 2 - Robin);
+1 // FLAGbottomBC (0 - Dirichlet, 1 - Neumann, 2 - Robin);
 0 // Dirichlet BC PHIBottom;
 0 // flux Neumann Bottom (0 if flag is 1 and q = 0);
 0 // h for bottom Wall fluid;
 0 // phiInf for bottom wall fluid;
-0 // FLAGrightBC (0 - Dirichlet, 1 - Neumann, 2 - Robin);
+1 // FLAGrightBC (0 - Dirichlet, 1 - Neumann, 2 - Robin);
 0 // Dirichlet BC PHIRight;
 0 // flux Neumann Right (0 if flag is 1 and q = 0);
 0 // h for right Wall fluid;
@@ -35,8 +35,7 @@
 0 // sourceTerm bar(S_phi);
 298.15 // Tref 25 degree Celcius;
 1 // h_Top;
-500 // number of cycles to find;
-0 // Initial Phi!
+2500 // number of cycles to find;
 
 *** Commenta below this line ***
 test case for the ECDM simulation. Material of workpiece is glass with k,rho,c as stated.

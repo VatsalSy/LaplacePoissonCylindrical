@@ -45,7 +45,6 @@ public:
   double Qa_bottom;
   double h_bottom;
   double Phi_infBottom;
-  double Phi_0;
   double source;
   double Tref;
   int cycleEnd;

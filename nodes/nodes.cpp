@@ -19,11 +19,13 @@ void Nodes::setFeaturesGrid(int nR, int nZ, double alphaIn, double delR, double 
 void Nodes::setTimeMarch(double Kfrac, double tdelta) {
   Nodes::deltaT = tdelta;
   Nodes::Fo = (Nodes::alpha * Nodes::deltaT) / (Nodes::deltaR * Nodes::deltaR);
-
+  double tempo = Nodes::deltaR/Nodes::deltaZ;
   if (Kfrac > 1 - Kfrac) {
-    Nodes::eta = (1 - Kfrac)/100;
+    //Nodes::eta = 0.5*(1 - Kfrac)/(Nodes::Fo*2*( 1 + tempo*tempo));
+    Nodes::eta = (1 - Kfrac)/1000;
   } else {
-    Nodes::eta = Kfrac/100;
+    //Nodes::eta = 0.5*Kfrac/(Nodes::Fo*2*( 1 + tempo*tempo));
+    Nodes::eta = (Kfrac)/1000;
   }
 
 }

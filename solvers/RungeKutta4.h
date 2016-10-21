@@ -3,6 +3,7 @@ void calcfun(std::vector<Nodes*> &, std::vector<double> &, std::vector<double> &
 void RungeKutta4(std::vector<Nodes*> &A) {
 // make dummy images
 double Eta = A[0]->eta, Fourier = A[0]->Fo, n = A.size();
+//std::cout << "Eta*Fourier = " <<Eta*Fourier<< std::endl;
 std::vector<double> phivec1(n), phivec2(n), phivec3(n), phivec4(n);
 std::vector<double> fun1(n), fun2(n), fun3(n), fun4(n);
 
@@ -38,7 +39,12 @@ calcfun(A,phivec4,fun4);
 // Step 4 getting phi(n+1)
 for (size_t i = 0; i < A.size(); i++) {
   A[i]->phi = phivec1[i] + Eta*Fourier*( fun1[i] + 2 * ( fun2[i] + fun3[i] ) + fun4[i] )/6;
-  //std::cout << phivec2[i] << std::endl;
+  if (A[i]->phi < -25) {
+    std::cout << "There is stability problem in Runge Kutta method! You can - \n 1.Change 4th order explicit RK to 5th order embedded RK \n 2. Change eta factor in source code\n 3. Increase deltaR " << std::endl;
+  }
+/*  if (A[i]->phi != 0) {
+    std::cout <<"phi = "<< A[i]->phi << std::endl;
+  }*/
 }
 
 } // RungeKutta4 ends

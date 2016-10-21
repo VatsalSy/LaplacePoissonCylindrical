@@ -14,11 +14,11 @@ int main () {
   Nodes::setTimeMarch(in.omega, in.deltaCycle);
   //Nodes::checkOut();
 
-  // Default settings for the top edge!
+  // Default settings for the top edge is insulated BC
   int FLAGtopBC = 1;
-  double Phi_top = 1;
+  double Phi_top = 0;
   double Phi_infTop = 0;
-  double Q_toptemp = 1;
+  double Q_toptemp = 0;
   std::vector<Nodes*> A(Nodes::nNodeR * Nodes::nNodeZ);
   // Setting the coefficients and other things!
   int counter = 0;
@@ -94,6 +94,9 @@ int main () {
   } // sweeping for loop in columns ends
 } // sweeping for loop in rows ends
 
+Nodes::checkOut();
+
+char filenameOut[256];
 // debugging section! tested for very simple case where steadystate solution is expected!
 //SOR(A,1.7,in.nNodeR,in.nNodeZ,1000000);
 //sprintf (filenameOut, "output/debug%03d.dat", 0);
@@ -101,7 +104,6 @@ int main () {
 // Debugging section ends!
 
 int cycle = 0;
-char filenameOut[256];
 int sparkIdx = ceil(in.r_0/in.deltaR);
 double topQ = 0;
 // initial condition
@@ -124,6 +126,7 @@ while (cycle < in.cycleEnd) {
         A[i]->setCoeffDefault(sourceTerm);
         //A[i]->checkOutDynamic();
         topQ = in.Q_top*exp(-45*(A[i]->R/in.r_0)*(A[i]->R/in.r_0));
+        //std::cout << "source Top = " <<topQ<< std::endl;
         A[i]->setBC(1,0,topQ,in.h_top, in.ThermalCond, Phi_infTop,A[i]->An,in.deltaZ);
         //A[i]->checkOutDynamic();
       }
