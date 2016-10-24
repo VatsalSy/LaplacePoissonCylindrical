@@ -108,12 +108,22 @@ int sparkIdx = ceil(in.r_0/in.deltaR);
 double topQ = 0;
 // initial condition
 // Setting the initial value conditions!
-for (size_t i = 0; i < A.size(); i++) {
-  A[i]->phi = in.PhiInitial;
+if (in.backUpFlag == 0) {
+  for (size_t i = 0; i < A.size(); i++) {
+    A[i]->phi = in.PhiInitial;
+  }
+} else if (in.backUpFlag == 1) {
+  for (size_t i = 0; i < A.size(); i++) {
+    A[i]->phi = in.backupTemp[i];
+  }
+  cycle = (int)in.backupTemp[in.backupTemp.size()-1];
+} else {
+  std::cout << "Please check the backUpFlag!" << std::endl;
+  exit(EXIT_FAILURE);
 }
+
 sprintf (filenameOut, "output/cycle%03d.dat", 0);
 in.EventWrite(A,filenameOut);
-
 
 while (cycle < in.cycleEnd) {
   cycle++;
@@ -140,13 +150,17 @@ while (cycle < in.cycleEnd) {
       }
       RungeKutta4(A);
     }
+    //std::cout << "istep = " <<istep<<" of cycle "<<cycle<< std::endl;
   } // end for loop of in cycle time integration
 
+if (cycle%in.ibackup == 0) {
+    in.Eventwritebackup(A,cycle);
+}
 sprintf (filenameOut, "output/cycle%03d.dat", cycle);
 in.EventWrite(A,filenameOut);
 
 std::cout << "Cycle " <<cycle<< " is completed!"<< std::endl;
 } // end while do loop for cycle marching
-
+  std::cout << "Process exited normally!" << std::endl;
   return 0;
 }

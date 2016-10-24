@@ -6,7 +6,7 @@ InputOutput::InputOutput(char filenameIn[256]){
     cerr << "Error opening file" <<endl;
     }
 
-  std::vector<double> v(38);
+  std::vector<double> v(40);
   for (size_t i = 0; i < v.size(); i++){
     infile>>v[i];
     infile.ignore(500,';');
@@ -67,9 +67,16 @@ void InputOutput::setInputParams(std::vector<double> InRaw){
 // spark characteristics
   this->r_0 = InRaw[11]; // radius of spark
   this->fr = InRaw[12];  // factor to be used in the Q_top calculation
+  this->conc = InRaw[15]; // concentration of electrolyte in %
   this->V_c = InRaw[13]; // critical voltage
   this->I_c = InRaw[14]; // critical current
-  this->conc = InRaw[15]; // concentration of electrolyte in %
+  if (this->V_c == 0 || this->I_c == 0) {
+    double concfr = this->conc/100;
+    this->V_c = ( 0.2381*concfr*concfr - 1.6095*concfr + 43.536 );
+    std::cout << "Critical Voltage is set at " <<this->V_c<<" Volts."<< std::endl;
+    this->I_c = ( 3.2323*concfr*concfr*concfr*0.00001 - 0.0027056*concfr*concfr + 0.091378*concfr + 0.71429 );
+    std::cout << "Critical Current is set at " <<this->I_c<<" Ampere."<<std::endl;
+  }
   this->h_top = InRaw[36]; // heat transfer coefficient at the top of domain
   this->Q_top = ( this->V_c * this->I_c * 4.45 * this->fr ) / (M_PI * this->r_0 * this->r_0 * this->Tref); // flux from the top of domain
 
@@ -81,9 +88,9 @@ void InputOutput::setInputParams(std::vector<double> InRaw){
   this->omega = (this->factorTime*this->tOnset)/this->deltaCycle;
 
 // BCs
-  this->FLAGleftBC = InRaw[18];
-  this->FLAGbottomBC = InRaw[23];
-  this->FLAGrightBC = InRaw[28];
+  this->FLAGleftBC = (int)InRaw[18];
+  this->FLAGbottomBC = (int)InRaw[23];
+  this->FLAGrightBC = (int)InRaw[28];
   this->Phi_left = InRaw[19];
   this->Qa_left = InRaw[20]/this->Tref;
   this->h_left = InRaw[21];
@@ -97,10 +104,18 @@ void InputOutput::setInputParams(std::vector<double> InRaw){
   this->h_bottom = InRaw[31];
   this->Phi_infBottom = InRaw[32];
 
+// Source term
   this->source = InRaw[34];
-
+// IVC
   this->PhiInitial = InRaw[33];
-  this->cycleEnd = InRaw[37];
+// Cycle ends!
+  this->cycleEnd = (int)InRaw[37];
+// backUpFlag
+  this->backUpFlag = (int)InRaw[38];
+  if (this->backUpFlag == 1) {
+    EventreadBackup();
+  }
+  this->ibackup = (int)InRaw[39];
 }
 
 void InputOutput::EventWrite(std::vector<Nodes*> &A, char filenameOut[256]) {
@@ -113,5 +128,38 @@ void InputOutput::EventWrite(std::vector<Nodes*> &A, char filenameOut[256]) {
   }*/
   for (int iout=0; iout<A.size(); iout++){
     fout<<A[iout]->R<<" "<<A[iout]->Z<<" "<<A[iout]->phi<<endl;
+  }
+}
+
+void InputOutput::EventreadBackup(){
+  ifstream infile;
+  infile.open("backup.dat");
+  // check for error in file
+  if (infile.fail()){
+    cerr << "Error opening the backup file. May be it does not exist." <<endl;
+    }
+  double temporary = 0;
+  for (size_t i = 0; i < this->nNodeR*this->nNodeZ+1; i++){
+    infile>>temporary;
+    this->backupTemp.push_back(temporary);
+  }
+
+  ofstream outfile;
+	outfile.open("echoBackup.dat");
+
+	for (size_t i=0; i<this->backupTemp.size(); i++){
+		outfile<<this->backupTemp[i]<<endl;
+	}
+}
+
+void InputOutput::Eventwritebackup (std::vector<Nodes*> &A,int cycle) {
+  ofstream fout;
+  fout.open("backup.dat");
+  for (int iout=0; iout<A.size()+1; iout++){
+    if (iout==A.size()) {
+      fout<<cycle<<endl;
+    } else {
+      fout<<A[iout]->phi<<endl;
+    }
   }
 }

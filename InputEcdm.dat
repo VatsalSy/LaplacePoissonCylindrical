@@ -2,17 +2,17 @@
 2000e-6 // Axial dimension (in m);
 0 // FLAGdeltaR : 0 - use nNodeR / 1 : use deltaR;
 0 // deltaR (in m) : enter only if FLAGdeltaR is 1;
-750 // nNodeR : enter only if FLAGdeltaR is 0;
+100 // nNodeR : enter only if FLAGdeltaR is 0;
 0 // FLAGdeltaZ : 0 - use nNodeZ / 1 : use deltaZ;
 0 // deltaZ (in m) : enter only if FLAGdeltaZ is 1;
-750 // nNodeZ : enter only if FLAGdeltaZ is 0;
+100 // nNodeZ : enter only if FLAGdeltaZ is 0;
 1.6 // Thermal Conductivity (in W/(mK));
 1970 // Density of the work piece (in kg/m^3);
 450 // specific heat capacity (in W/(kgK));
 185e-6 // radius of the spark (in m);
 0.75 // factor used in calculation of Q_top;
-40 // critical voltage (in V);
-1 // critical current (in Amp);
+0 // critical voltage (in V): by default(if written 0) the V_c is calculated using the empirical formula else put the value;
+0 // critical current (in Amp: by default(if written 0) the V_c is calculated using the empirical formula else put the value);
 30 // concentration in %;
 1e-3 // deltaTOneset (in s);
 1e-3 // deltaTOffset (in s);
@@ -35,7 +35,9 @@
 0 // sourceTerm bar(S_phi);
 298.15 // Tref 25 degree Celcius;
 1 // h_Top;
-2500 // number of cycles to find;
+100 // number of cycles to find;
+0// backUpFlag 0: start from t = 0; 1: use an intermediate file to set IVC;
+10 // ibackup number of time cycles after which back up writing is to be done.
 
 *** Commenta below this line ***
 test case for the ECDM simulation. Material of workpiece is glass with k,rho,c as stated.

@@ -49,10 +49,15 @@ public:
   double Tref;
   int cycleEnd;
   double PhiInitial;
+  int backUpFlag;
+  int ibackup;
+  std::vector<double>  backupTemp;
 
   InputOutput(char[256]);
   void EventWrite(std::vector<Nodes*> &, char[256]);
   void setInputParams(std::vector<double>);
+  void EventreadBackup();
+  void Eventwritebackup(std::vector<Nodes*> &, int);
 };
 #include "InputOutput.cpp"
 #endif
