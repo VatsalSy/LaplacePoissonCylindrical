@@ -72,9 +72,9 @@ void InputOutput::setInputParams(std::vector<double> InRaw){
   this->I_c = InRaw[14]; // critical current
   if (this->V_c == 0 || this->I_c == 0) {
     double concfr = this->conc/100;
-    this->V_c = ( 0.2381*concfr*concfr - 1.6095*concfr + 43.536 );
+    this->V_c = ( 0.182*concfr*concfr - 1.8334*concfr + 56.536 );
     std::cout << "Critical Voltage is set at " <<this->V_c<<" Volts."<< std::endl;
-    this->I_c = ( 3.2323*concfr*concfr*concfr*0.00001 - 0.0027056*concfr*concfr + 0.091378*concfr + 0.71429 );
+    this->I_c = ( 4.8645*concfr*concfr*concfr*0.00001 - 0.4278*concfr*concfr + 0.1578*concfr + 0.75590 );
     std::cout << "Critical Current is set at " <<this->I_c<<" Ampere."<<std::endl;
   }
   this->h_top = InRaw[36]; // heat transfer coefficient at the top of domain
